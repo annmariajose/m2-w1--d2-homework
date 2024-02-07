@@ -36,9 +36,13 @@
                 $.getJSON("data.json", fillTableValues);
                 
                 function fillTableValues(jsonData) {
+                    var jsonKeys = Object.keys(jsonData);
+                    var jsonKeyindex = 1;
+
                     //Add caption text
                     $("caption").text(jsonData.title);
-                    //add table header row
+                    
+                    //Add table rows and columns and fill data
                     for(var i = 0; i < numberOfRows; i++) {
                         //Add table rows: 1 header row, 1 footer row, and (number of rows - 2) body rows
                         if (i == 0) {
@@ -54,11 +58,20 @@
 
                         //Add table cells as required to all rows using their ID
                         for(var j = 0; j < numberOfColumns; j++) {
+                            var childElement = "td"; //store child element to easily switch between th and td
+                            if (i == 0) {
+                                childElement = "th";
+                            }
+
+                            //Add table cells
                             if (i == 0) {
                                 $("#" + rowIds[i]).append(tableHeaderTag);
                             } else {
                                 $("#" + rowIds[i]).append(tableCellTag);
                             }
+
+                            //Fill table cells with data
+                            $("#" + rowIds[i] + " " + childElement + ":nth-child(" + (j + 1) + ")").text(jsonData[jsonKeys[jsonKeyindex++]]);
                         }
                     }
                 }
