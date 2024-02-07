@@ -11,7 +11,57 @@
     <script>
         $(document).ready(function () {
             $("#btn").click(function (event) {
+                //Assign variables
+                var tableHeaderTag = "<th></th>";
+                var tableRowTag = "<tr></tr>";
+                var tableCellTag = "<td></td>";
+                var numberOfColumns = 5;
+                var numberOfRows = 4;
+                var rowIds = ["showheading", "showcalories", "showfat", "showven"];
+
+                //An error catch situation (not for this homework exercise) to add empty ids at the end to create table skeleton
+                if (rowIds.length < numberOfRows) {
+                    for (var i = rowIds.length; i < numberOfRows; i++) {
+                        rowIds.push("r" + i);
+                    }
+                }
+
+                //Add table caption, head, body and foot
+                $("table").append("<caption></caption>");
+                $("table").append("<thead></thead>");
+                $("table").append("<tbody></tbody>");
+                $("table").append("<tfoot></tfoot>");
+
+                //Load data from json file
+                $.getJSON("data.json", fillTableValues);
                 
+                function fillTableValues(jsonData) {
+                    //Add caption text
+                    $("caption").text(jsonData.title);
+                    //add table header row
+                    for(var i = 0; i < numberOfRows; i++) {
+                        //Add table rows: 1 header row, 1 footer row, and (number of rows - 2) body rows
+                        if (i == 0) {
+                            $("thead").append(tableRowTag);
+                            $("thead tr").attr("id", rowIds[i]);
+                        } else if (i == (numberOfRows - 1)) {
+                            $("tfoot").append(tableRowTag);
+                            $("tfoot tr").attr("id", rowIds[i]);
+                        } else {
+                            $("tbody").append(tableRowTag);
+                            $("tbody tr:nth-child(" + i + ")").attr("id", rowIds[i]);
+                        }
+
+                        //Add table cells as required to all rows using their ID
+                        for(var j = 0; j < numberOfColumns; j++) {
+                            if (i == 0) {
+                                $("#" + rowIds[i]).append(tableHeaderTag);
+                            } else {
+                                $("#" + rowIds[i]).append(tableCellTag);
+                            }
+                        }
+                    }
+                }
             });
         });
     </script>
