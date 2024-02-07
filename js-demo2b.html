@@ -11,6 +11,11 @@
     <script>
         $(document).ready(function () {
             $("#btn").click(function (event) {
+                //Only load data if table is empty
+                if ($("caption").length > 0) {
+                    return;
+                }
+
                 //Assign variables
                 var tableHeaderTag = "<th></th>";
                 var tableRowTag = "<tr></tr>";
